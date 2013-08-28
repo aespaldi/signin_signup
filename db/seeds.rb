@@ -1,5 +1,3 @@
 
 
-10.times do 
-  Url.create!(name: Faker::Internet.user_name,long: Faker::Internet.url )
-end
+20.times { User.create! name: Faker::Name.name, email: Faker::Internet.email, password: Faker::Lorem.word }
