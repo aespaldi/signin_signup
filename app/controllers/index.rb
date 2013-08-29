@@ -1,7 +1,13 @@
+enable :sessions
 
 get '/' do
 @broadcast = "Welcome to Cheeze-it vault!"
-erb :index
+  session[:user_id] ||= false
+  if session[:user_id] == true
+    erb :secret
+  else
+    erb :index
+  end
 end
 
 post '/sign_up' do
@@ -16,11 +22,19 @@ end
 
 # e.g., /q6bda
 post '/sign_in' do 
-  if User.authenticate(params[:email],params[:password])
+  @this_user = User.authenticate(params[:email],params[:password]) 
+   if @this_user
+    session[:user_id] = true
     erb :secret
   else
     @broadcast = "log in Error"
     erb :index
   end
+end
 
+
+post '/logout' do
+  session.clear
+  @broadcast = "logged out succesfully"
+  erb :index
 end
